@@ -799,12 +799,35 @@ BFC 规则有这样的描述：BFC 区域，不会与浮动元素重叠。因此
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>品字布局</title> 
 <style>
-   * {margin: 0;padding: 0;}/* 去除所有元素默认的内外边距的值 */
-   html, body {height: 100%;}/* 默认HTML，body的高度为0，为其设置高度以使后面的div可以用百分比设置高度 */
-   .header {height: 50%;width: 50%;background-color:  rgb(255,2545,167);margin: 0 auto;}
-   .main {height: 50%;width: 100%;}
-   .main .left {float: left;width: 50%;height: 100%;background-color: rgb(204,255,102);}
-   .main .right {float: left;width: 50%;height: 100%;background-color: rgb(189,255,255);}
+   * {
+   		margin: 0;
+   		padding: 0;
+   }
+   html, body {
+   		height: 100%;
+   }
+   .header {
+   		height: 50%;
+   		width: 50%;
+   		background-color:  rgb(255,2545,167);
+   		margin: 0 auto;
+   }
+   .main {
+   		height: 50%;
+   		width: 100%;
+   }
+   .main .left {
+   		float: left;
+   		width: 50%;
+   		height: 100%;
+   		background-color: rgb(204,255,102);
+   }
+   .main .right {
+   		float: left;
+   		width: 50%;
+   		height: 100%;
+   		background-color: rgb(189,255,255);
+   }
 </style>
 </head>
 <body>
@@ -823,14 +846,44 @@ BFC 规则有这样的描述：BFC 区域，不会与浮动元素重叠。因此
 <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
 <title>品字布局</title> 
 <style>
-  * {margin: 0;padding: 0;}
-html, body {height: 100%;}/* 默认HTML，body的高度为0，为其设置高度以使后面的div可以用百分比设置高度 */
-  .pinzi-flex {position: fixed;left: 0;top: 0;height: 100%;width: 100%;}
-  .header {height: 50%;}
-  .header .div-up {width: 50%;height: 100%;background-color:  rgb(255,2545,167);margin: 0 auto;}
-  .main {height: 50%;position: relative;}
-  .main .div-left {position: absolute;left: 0; width: 50%;height: 100%;background-color: rgb(204,255,102);}
-  .main .div-right {position: absolute;right: 0; width: 50%;height: 100%;background-color: rgb(189,255,255);}
+  * {
+  		margin: 0;padding: 0;
+  }
+  html, body {
+  		height: 100%;
+  }
+  .pinzi-flex {
+  		position: fixed;
+  		left: 0;top: 0;
+  		height: 100%;
+  		width: 100%;
+  }
+  .header {
+  		height: 50%;
+  }
+  .header .div-up {
+  		width: 50%;
+  		height: 100%;
+  		background-color:  rgb(255,2545,167);
+  		margin: 0 auto;
+  }
+  .main {
+  		height: 50%;
+  		position: relative;
+  }
+  .main .div-left {
+  		position: absolute;
+  		left: 0; width: 50%;
+  		height: 100%;
+  		background-color: rgb(204,255,102);
+  }
+  .main .div-right {
+  		position: absolute;
+  		right: 0; 
+  		width: 50%;
+  		height: 100%;
+  		background-color: rgb(189,255,255);
+  }
 </style>
 </head>
 <body>
@@ -844,6 +897,231 @@ html, body {height: 100%;}/* 默认HTML，body的高度为0，为其设置高度
 </div>
 </div>  
 </body>
+</html>
+```
+
+### 14.用css模拟红绿灯
+
+```
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <style>
+        /*
+        思路：
+            总共三个灯，分别红黄绿，要一个一个按顺序点亮，我们可以这样暂定一个循环需要10秒中，每盏灯点亮3秒，
+            那么在keyframes中对应写法就如下所示（红灯点亮时间为10%--40%，黄灯点亮时间为40%--70%，绿灯点亮时间为70%--100%）
+        */
+
+        @keyframes redLamp {
+            0% {
+                background-color: #999;
+            }
+            9.9% {
+                background-color: #999;
+            }
+            10% {
+                background-color: red;
+            }
+            40% {
+                background-color: red;
+            }
+            40.1% {
+                background-color: #999;
+            }
+            100% {
+                background-color: #999;
+            }
+        }
+
+        @keyframes yellowLamp {
+            0% {
+                background-color: #999;
+            }
+            39.9% {
+                background-color: #999;
+            }
+            40% {
+                background-color: yellow;
+            }
+            70% {
+                background-color: yellow;
+            }
+            70.1% {
+                background-color: #999;
+            }
+
+            100% {
+                background-color: #999;
+            }
+        }
+
+        @keyframes greenLamp {
+            0% {
+                background-color: #999;
+            }
+            69.9% {
+                background-color: #999;
+            }
+            70% {
+                background-color: green;
+            }
+            100% {
+                background-color: green;
+            }
+        }
+        #lamp,
+        #lamp:before,
+        #lamp:after {
+            width: 100px;
+            height: 100px;
+            border-radius: 50%;
+            background-color: #999;
+            position: relative;
+        }
+        #lamp {
+            left: 100px;
+            animation: yellowLamp 10s ease infinite;
+        }
+        #lamp:before {
+            display: block;
+            content: '';
+            left: -100px;
+            animation: redLamp 10s ease infinite;
+        }
+        #lamp:after {
+            display: block;
+            content: '';
+            left: 100px;
+            top: -100px;
+            animation: greenLamp 10s ease infinite;
+        }
+    </style>
+</head>
+<body>
+    <div id="lamp"></div>
+</body>
+</html>
+```
+
+# 三、JavaScript
+
+### 1.JavaScript有哪些数据类型？
+
+```
+基本数据类型：Boolean、Null、Undefined、Number、String、Symbol (ECMAScript 6 新定义)
+引用数据类型：Object
+```
+
+### 2.undefined和null的区别？
+
+```
+null表示"没有对象"，即该处不应该有值。典型用法是：
+（1） 作为函数的参数，表示该函数的参数不是对象。
+（2） 作为对象原型链的终点。
+
+undefined表示"缺少值"，就是此处应该有一个值，但是还没有定义。典型用法是：
+（1）变量被声明了，但没有赋值时，就等于undefined。
+（2) 调用函数时，应该提供的参数没有提供，该参数等于undefined。
+（3）对象没有赋值的属性，该属性的值为undefined。
+（4）函数没有返回值时，默认返回undefined。
+
+用一句话总结两者的区别就是：undefined 表示一个变量自然的、最原始的状态值，而 null 则表示一个变量被人为的设置为空对象，而不是原始状态。所以，在实际使用过程中，为了保证变量所代表的语义，不要对一个变量显式的赋值 undefined，当需要释放一个对象时，直接赋值为 null 即可。
+```
+
+### 3.JavaScript中如何判断变量类型？
+
+```
+Object.prototype.toString.call(variable) 用这个方法来判断变量类型目前是最可靠的了，它总能返回正确的值。
+
+该方法返回 "[object type]", 其中type是对象类型。
+```
+
+### 4.使用JavaScript如何实现红绿灯？
+
+```
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <style>
+        #green {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+        }
+        #yellow {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+        }
+        #red {
+            width: 100px;
+            height: 100px;
+            border-radius: 50px;
+        }
+        .lamp {
+            width: 400px;
+            height: 140px;
+            border: 1px solid #666;
+            border-radius: 20px;
+            background: #f7f7f7;
+            display: flex;
+            justify-content: space-around;
+            align-items: center;
+        }
+    </style>
+</head>
+<body>
+    <div class="lamp">
+        <div id="green"></div>
+        <div id="yellow"></div>
+        <div id="red"></div>
+    </div>
+</body>
+<script>
+    window.onload = () => {
+        let bg1 = document.getElementById('green')
+        let bg2 = document.getElementById('yellow')
+        let bg3 = document.getElementById('red')
+        let setColor = (color, duration, num) => {
+            return new Promise((res, rej) => {
+                colors(num, color)
+                setTimeout(res, duration)
+            })
+        }
+        let colors = (num, color) => {
+            if (num === 1) {
+                bg1.style.background = color
+                bg2.style.background = '#E2DCDC'
+                bg3.style.background = '#E2DCDC'
+            }
+            if (num === 2) {
+                bg2.style.background = color
+                bg1.style.background = '#E2DCDC'
+                bg3.style.background = '#E2DCDC'
+            }
+            if (num === 3) {
+                bg3.style.background = color
+                bg2.style.background = '#E2DCDC'
+                bg1.style.background = '#E2DCDC'
+            }
+        }
+        async function setLamp() {
+            await setColor('green', 6000, 1)
+            await setColor('yellow', 2000, 2)
+            await setColor('red', 4000, 3)
+            await setLamp()
+        }
+        setLamp()
+    }
+</script>
 </html>
 ```
 
